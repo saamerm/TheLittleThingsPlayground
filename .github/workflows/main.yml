@@ -1,0 +1,23 @@
+name: CI on Push and Pull Request
+
+on: [push, pull_request]
+
+jobs:
+  Android:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Android
+      run: |
+        nuget restore
+        cd TheLittleThingsPlayground.Android
+        msbuild TheLittleThingsPlayground.Android.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug
+        
+  iOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: iOS
+      run: |
+        nuget restore
+        msbuild TheLittleThingsPlayground.iOS/TheLittleThingsPlayground.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
